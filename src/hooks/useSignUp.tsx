@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function useSignUp() {
   const navigate = useNavigate();
-  const { setUser } = useAppStore();
+  const { setUser, setCurrUser, setLogin } = useAppStore();
   const {
     register,
     handleSubmit,
@@ -20,6 +20,8 @@ export default function useSignUp() {
   function onSubmit(data: UserI) {
     console.log(data);
     setUser(data);
+    setCurrUser(data);
+    setLogin(true);
     toast.success('Admin Regisitered Succesfully ...');
     navigate('/');
     window.location.reload();

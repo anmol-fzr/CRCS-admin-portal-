@@ -10,6 +10,8 @@ export const useAppStore = create(
         set((store: any) => ({ users: [...store.users, user] }));
       },
 
+      isLogin: false,
+      setLogin: (value: boolean) => set({ isLogin: value }),
       currUser: {},
       setCurrUser: (user: UserI) => {
         set({ currUser: user });

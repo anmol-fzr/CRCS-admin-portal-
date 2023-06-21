@@ -7,7 +7,7 @@ import { toast } from 'react-hot-toast/headless';
 import { useNavigate } from 'react-router-dom';
 
 export default function useSignIn() {
-  const { users, setCurrUser } = useAppStore();
+  const { users, setCurrUser, setLogin } = useAppStore();
   const navigate = useNavigate();
 
   const {
@@ -26,6 +26,7 @@ export default function useSignIn() {
     );
     if (user.length > 0) {
       setCurrUser(user[0]);
+      setLogin(true);
       toast.success('Admin Logged in Succesfully');
       navigate('/');
       window.location.reload();

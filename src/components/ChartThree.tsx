@@ -1,6 +1,11 @@
 import { ApexOptions } from 'apexcharts';
 import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
+import { sectors } from '../shared/data';
+
+const arraySectors = Array.from(sectors);
+
+console.log(sectors);
 
 interface ChartThreeState {
   series: number[];
@@ -11,7 +16,7 @@ const options: ApexOptions = {
     type: 'donut',
   },
   colors: ['#10B981', '#375E83', '#259AE6', '#FFA70B'],
-  labels: ['Remote', 'Hybrid', 'Onsite', 'Leave'],
+  labels: arraySectors,
   legend: {
     show: true,
     position: 'bottom',
@@ -48,9 +53,11 @@ const options: ApexOptions = {
   ],
 };
 
+const series = [1, 5, 1, 1, 1];
+
 const ChartThree: React.FC = () => {
   const [state, setState] = useState<ChartThreeState>({
-    series: [65, 34, 12, 56],
+    series,
   });
 
   return (
@@ -58,10 +65,10 @@ const ChartThree: React.FC = () => {
       <div className="mb-3 justify-between gap-4 sm:flex">
         <div>
           <h5 className="text-xl font-semibold text-black dark:text-white">
-            Visitors Analytics
+            Sector wise Statistics
           </h5>
         </div>
-        <div>
+        {/* <div>
           <div className="relative z-20 inline-block">
             <select
               name=""
@@ -92,7 +99,7 @@ const ChartThree: React.FC = () => {
               </svg>
             </span>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="mb-2">
@@ -106,42 +113,22 @@ const ChartThree: React.FC = () => {
       </div>
 
       <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
-        <div className="w-full px-8 sm:w-1/2">
-          <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-primary"></span>
-            <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Desktop </span>
-              <span> 65% </span>
-            </p>
+        {arraySectors.map((sector, index) => (
+          <div className="w-full px-8 sm:w-1/2">
+            <div className="flex w-full items-center">
+              <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-primary"></span>
+              <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
+                <span> {sector} </span>
+                <span>
+                  {' '}
+                  {((series[index] / series.reduce((a, b) => a + b)) * 100)
+                    .toString()
+                    .substr(0, 5)}
+                </span>
+              </p>
+            </div>
           </div>
-        </div>
-        <div className="w-full px-8 sm:w-1/2">
-          <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#6577F3]"></span>
-            <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Tablet </span>
-              <span> 34% </span>
-            </p>
-          </div>
-        </div>
-        <div className="w-full px-8 sm:w-1/2">
-          <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#8FD0EF]"></span>
-            <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Mobile </span>
-              <span> 45% </span>
-            </p>
-          </div>
-        </div>
-        <div className="w-full px-8 sm:w-1/2">
-          <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#0FADCF]"></span>
-            <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Unknown </span>
-              <span> 12% </span>
-            </p>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

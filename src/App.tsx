@@ -6,12 +6,14 @@ import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import Loader from './common/Loader';
 import toast, { Toaster } from 'react-hot-toast';
+import Protected from './components/Protected';
+import { useAppStore } from './utils/store/appStore';
 
 const Calendar = lazy(() => import('./pages/Calendar'));
 const Chart = lazy(() => import('./pages/Chart'));
 const FormElements = lazy(() => import('./pages/Form/FormElements'));
 const FormLayout = lazy(() => import('./pages/Form/FormLayout'));
-const Profile = lazy(() => import('./pages/Profile'));
+// const Profile = lazy(() => import('./pages/Profile'));
 const Settings = lazy(() => import('./pages/Settings'));
 const Tables = lazy(() => import('./pages/Tables'));
 const Alerts = lazy(() => import('./pages/UiElements/Alerts'));
@@ -19,6 +21,8 @@ const Buttons = lazy(() => import('./pages/UiElements/Buttons'));
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
 function App() {
+  const { currUser } = useAppStore();
+
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -29,69 +33,106 @@ function App() {
     <Loader />
   ) : (
     <>
-      <Toaster position="top-center" reverseOrder={false} />
+      {/* <Toaster position="top-center" reverseOrder={false} /> */}
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        gutter={8}
+        containerStyle={{ zIndex: 9999999999999 }}
+        toastOptions={{
+          duration: 3000,
+          success: {
+            duration: 5000,
+            theme: {
+              primary: 'blue',
+              secondary: 'black',
+            },
+          },
+        }}
+      />
       <Routes>
         <Route path="/auth/signin" element={<SignIn />} />
         <Route path="/auth/signup" element={<SignUp />} />
         <Route element={<DefaultLayout />}>
-          <Route index element={<ECommerce />} />
+          <Route
+            index
+            element={
+              <Protected>
+                <ECommerce />
+              </Protected>
+            }
+          />
           <Route
             path="/calendar"
             element={
-              <Suspense fallback={<Loader />}>
-                <Calendar />
-              </Suspense>
+              <Protected>
+                <Suspense fallback={<Loader />}>
+                  <Calendar />
+                </Suspense>
+              </Protected>
             }
           />
-          <Route
+          {/* <Route
             path="/profile"
             element={
-              <Suspense fallback={<Loader />}>
-                <Profile />
-              </Suspense>
+              <Protected>
+                <Suspense fallback={<Loader />}>
+                  <Profile />
+                </Suspense>
+              </Protected>
             }
-          />
+          /> */}
           <Route
             path="/forms/form-elements"
             element={
-              <Suspense fallback={<Loader />}>
-                <FormElements />
-              </Suspense>
+              <Protected>
+                <Suspense fallback={<Loader />}>
+                  <FormElements />
+                </Suspense>
+              </Protected>
             }
           />
           <Route
             path="/forms/form-layout"
             element={
-              <Suspense fallback={<Loader />}>
-                <FormLayout />
-              </Suspense>
+              <Protected>
+                <Suspense fallback={<Loader />}>
+                  <FormLayout />
+                </Suspense>
+              </Protected>
             }
           />
           <Route
             path="/tables"
             element={
-              <Suspense fallback={<Loader />}>
-                <Tables />
-              </Suspense>
+              <Protected>
+                <Suspense fallback={<Loader />}>
+                  <Tables />
+                </Suspense>
+              </Protected>
             }
           />
           <Route
             path="/settings"
             element={
-              <Suspense fallback={<Loader />}>
-                <Settings />
-              </Suspense>
+              <Protected>
+                <Suspense fallback={<Loader />}>
+                  <Settings />
+                </Suspense>
+              </Protected>
             }
           />
           <Route
             path="/chart"
             element={
-              <Suspense fallback={<Loader />}>
-                <Chart />
-              </Suspense>
+              <Protected>
+                <Suspense fallback={<Loader />}>
+                  <Chart />
+                </Suspense>
+              </Protected>
             }
           />
-          <Route
+          {/* <Route
             path="/ui/alerts"
             element={
               <Suspense fallback={<Loader />}>
@@ -106,7 +147,7 @@ function App() {
                 <Buttons />
               </Suspense>
             }
-          />
+          /> */}
         </Route>
       </Routes>
     </>
