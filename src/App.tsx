@@ -8,6 +8,10 @@ import Loader from './common/Loader';
 import toast, { Toaster } from 'react-hot-toast';
 import Protected from './components/Protected';
 import { useAppStore } from './utils/store/appStore';
+import TableOne from './components/TableOne';
+import data from './shared/data';
+import { fullHeader } from './shared/table';
+import { shorten } from './shared/functions';
 
 const Calendar = lazy(() => import('./pages/Calendar'));
 const Chart = lazy(() => import('./pages/Chart'));
@@ -122,16 +126,7 @@ function App() {
               </Protected>
             }
           />
-          <Route
-            path="/chart"
-            element={
-              <Protected>
-                <Suspense fallback={<Loader />}>
-                  <Chart />
-                </Suspense>
-              </Protected>
-            }
-          />
+
           {/* <Route
             path="/ui/alerts"
             element={
@@ -149,6 +144,69 @@ function App() {
             }
           /> */}
         </Route>
+        <Route
+          path="/table"
+          element={
+            <Protected>
+              <Suspense fallback={<Loader />}>
+                <div className="col-span-12 xl:col-span-12">
+                  <TableOne full header={fullHeader}>
+                    {data.map(
+                      ({
+                        name = 'N/A',
+                        address = 'N/A',
+                        sector = 'N/A',
+                        state = 'N/A',
+                        district = 'N/A',
+                        opArea = 'N/A',
+                        regDate,
+                      }) => (
+                        <div className="grid grid-cols-3 border-b border-stroke dark:border-strokedark sm:grid-cols-5 lg:grid-cols-7">
+                          <div className="flex items-center gap-3 p-2.5 xl:p-5">
+                            <p className="hidden capitalize text-black dark:text-white sm:block">
+                              {shorten(name, 50)}
+                            </p>
+                          </div>
+
+                          <div className="flex items-center justify-center p-2.5 xl:p-5">
+                            <p className="text-black dark:text-white">
+                              {shorten(address, 50)}
+                            </p>
+                          </div>
+
+                          <div className="flex items-center justify-center p-2.5 xl:p-5">
+                            <p className="text-meta-3">{state}</p>
+                          </div>
+
+                          <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+                            <p className="text-black dark:text-white">
+                              {district}
+                            </p>
+                          </div>
+
+                          <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+                            <p className="text-meta-5">
+                              {regDate
+                                ? new Date(regDate).toDateString()
+                                : 'N/A'}
+                              {/* {regDate} */}
+                            </p>
+                          </div>
+                          <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+                            <p className="text-meta-5">{opArea}</p>
+                          </div>
+                          <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+                            <p className="text-meta-5">{sector}</p>
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </TableOne>
+                </div>
+              </Suspense>
+            </Protected>
+          }
+        />
       </Routes>
     </>
   );

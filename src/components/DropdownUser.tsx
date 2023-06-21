@@ -5,7 +5,7 @@ import UserOne from '../images/user/user-01.png';
 import { useAppStore } from '../utils/store/appStore';
 
 const DropdownUser = () => {
-  const { currUser } = useAppStore();
+  const { currUser, setLogin, setCurrUser } = useAppStore();
 
   const { name, email } = currUser;
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -54,7 +54,7 @@ const DropdownUser = () => {
           <span className="block text-xs">{email}</span>
         </span>
 
-        <span className="h-12 w-12 rounded-full  border border-white flex items-center justify-center ">
+        <span className="flex h-12 w-12  items-center justify-center rounded-full border border-white ">
           <svg
             className="fill-current"
             width="18"
@@ -175,7 +175,13 @@ const DropdownUser = () => {
             </Link>
           </li>
         </ul>
-        <button className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+        <button
+          onClick={() => {
+            setLogin(false);
+            setCurrUser({});
+          }}
+          className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+        >
           <svg
             className="fill-current"
             width="22"
