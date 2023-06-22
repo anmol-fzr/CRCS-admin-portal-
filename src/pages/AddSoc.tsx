@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+
 import Input from '../components/Form/Input/Input';
 import Button from '../components/Form/Button/Button';
 import Heading from '../components/Heading';
@@ -7,10 +8,10 @@ import { State, City } from 'country-state-city';
 import Select from '../components/Select';
 import { Controller } from 'react-hook-form';
 import useAddSoc from '../hooks/useAddSoc';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { sectors } from '../shared/data';
 
-var states;
-var cities;
+export var states;
 
 if (!states) {
   let arr = State.getStatesOfCountry('IN').map(({ name, isoCode }) => ({
@@ -34,51 +35,72 @@ const Fields = [
     placeholder: 'enter address of the society',
   },
   {
-    label: 'phone',
-    name: 'phone',
-    type: 'phone',
-    placeholder: 'XXX-XXX-XXXX',
+    label: 'Registration Date',
+    name: 'regDate',
+    type: 'date',
+    // placeholder: '******',
   },
   {
-    label: 'password',
-    name: 'password',
-    type: 'password',
-    placeholder: '******',
-  },
-  {
-    label: 'confirm password',
-    name: 'cPassword',
-    type: 'password',
-    placeholder: '******',
-  },
-];
-
-// console.log(states);
-
-const SelectFields = [
-  {
-    label: 'name',
+    label: 'Operating Area',
+    name: 'opArea',
     type: 'text',
-    options: states,
-    name: 'name',
-    placeholder: 'State...',
+    placeholder: 'XYZ area of some city',
   },
 ];
+console.clear();
+console.log(Array.from(sectors));
+const sectorOptions = [];
+
+Array.from(sectors).map((val) => {
+  sectorOptions.push({
+    label: val,
+    value: val,
+  });
+});
+
+console.log();
+// console.log(states);
 
 const SignUp = () => {
   const { register, handleSubmit, errors, control, onSubmit, watch } =
     useAddSoc();
+
   const state = watch('state');
+  const [cities, setCities] = useState([]);
+
+  const SelectFields = [
+    {
+      label: 'Sector',
+      options: sectorOptions,
+      name: 'sector',
+      placeholder: 'Sector...',
+    },
+    {
+      label: 'State',
+      options: states,
+      name: 'state',
+      placeholder: 'State...',
+    },
+    {
+      label: 'District',
+      options: cities,
+      name: 'district',
+      placeholder: 'District...',
+    },
+  ];
 
   useEffect(() => {
-    console.clear();
-    console.log(state);
+    let arr = City.getCitiesOfState('IN', state).map(({ name }) => ({
+      label: name,
+      value: name,
+    }));
+
+    setCities(arr);
   }, [state]);
 
   useEffect(() => {
-    cities = City.getCitiesOfState('IN', state);
-    console.log(City.getCitiesOfState('IN', state));
-  }, [state]);
+    console.log(cities);
+  }, [cities]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center ">
@@ -91,44 +113,46 @@ const SignUp = () => {
                 Add a new Society
               </span>
 
-              <form className="grid grid-cols-2 gap-x-8 overflow-visible">
-                {Fields?.map(({ label, placeholder, name, type }) => (
-                  <Input
-                    key={label}
-                    error={errors[name]?.message}
-                    {...{ register, label, placeholder, name, type }}
-                  />
-                ))}
-                {SelectFields?.map(({ name, placeholder, options, label }) => (
-                  <Controller
-                    name={name}
-                    key={placeholder}
-                    control={control}
-                    render={({ field }) => {
-                      const { name, onChange, value, ref } = field;
-                      return (
-                        <div className="flex flex-col">
-                          <Select
-                            ref={ref}
-                            {...{ name, value, placeholder, label, options }}
-                            error={errors[name]?.message}
-                            onChange={({ value }) => onChange(value)}
-                          />
-                        </div>
-                      );
-                    }}
-                  />
-                ))}
+              <form>
+                <div className="grid grid-cols-2 gap-x-8 overflow-visible">
+                  {Fields?.map(({ label, placeholder, name, type }) => (
+                    <Input
+                      key={label}
+                      error={errors[name]?.message}
+                      {...{ register, label, placeholder, name, type }}
+                    />
+                  ))}
+                  {SelectFields?.map(
+                    ({ name, placeholder, options, label }) => (
+                      <Controller
+                        name={name}
+                        key={placeholder}
+                        control={control}
+                        render={({ field }) => {
+                          const { name, onChange, value, ref } = field;
+                          return (
+                            <div className="flex flex-col">
+                              <Select
+                                ref={ref}
+                                {...{
+                                  name,
+                                  value,
+                                  placeholder,
+                                  options,
+                                }}
+                                error={errors[name]?.message}
+                                onChange={({ value }) => onChange(value)}
+                              />
+                            </div>
+                          );
+                        }}
+                      />
+                    )
+                  )}
+                </div>
 
-                <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
-
-                <div className="mt-6 text-center">
-                  <p>
-                    Already have an account?{' '}
-                    <Link to="/auth/signin" className="text-primary">
-                      Sign in
-                    </Link>
-                  </p>
+                <div className="mx-auto mt-12 w-48  ">
+                  <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
                 </div>
               </form>
             </div>
