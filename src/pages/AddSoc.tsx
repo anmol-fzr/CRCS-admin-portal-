@@ -114,7 +114,7 @@ const SignUp = () => {
               </span>
 
               <form>
-                <div className="grid grid-cols-2 gap-x-8 overflow-visible">
+                <div className="grid grid-cols-1 gap-x-8 overflow-visible md:grid-cols-2">
                   {Fields?.map(({ label, placeholder, name, type }) => (
                     <Input
                       key={label}
