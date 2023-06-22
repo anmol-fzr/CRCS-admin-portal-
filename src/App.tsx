@@ -13,7 +13,9 @@ import data from './shared/data';
 import { fullHeader } from './shared/table';
 import { shorten } from './shared/functions';
 
+
 const Calendar = lazy(() => import('./pages/Calendar'));
+const AddSoc = lazy(() => import('./pages/AddSoc'));
 const Chart = lazy(() => import('./pages/Chart'));
 const FormElements = lazy(() => import('./pages/Form/FormElements'));
 const FormLayout = lazy(() => import('./pages/Form/FormLayout'));
@@ -72,6 +74,16 @@ function App() {
               <Protected>
                 <Suspense fallback={<Loader />}>
                   <Calendar />
+                </Suspense>
+              </Protected>
+            }
+          />
+          <Route
+            path="/add/society"
+            element={
+              <Protected>
+                <Suspense fallback={<Loader />}>
+                  <AddSoc />
                 </Suspense>
               </Protected>
             }
@@ -161,7 +173,10 @@ function App() {
                         opArea = 'N/A',
                         regDate,
                       }) => (
-                        <div className="grid grid-cols-3 border-b border-stroke dark:border-strokedark sm:grid-cols-5 lg:grid-cols-7">
+                        <div
+                          key={district}
+                          className="grid grid-cols-3 border-b border-stroke dark:border-strokedark sm:grid-cols-5 lg:grid-cols-7"
+                        >
                           <div className="flex items-center gap-3 p-2.5 xl:p-5">
                             <p className="hidden capitalize text-black dark:text-white sm:block">
                               {shorten(name, 50)}

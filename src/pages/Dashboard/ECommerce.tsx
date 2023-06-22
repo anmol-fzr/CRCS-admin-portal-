@@ -4,10 +4,11 @@ import ChartThree from '../../components/ChartThree.tsx';
 import ChartTwo from '../../components/ChartTwo.tsx';
 import TableOne from '../../components/TableOne.tsx';
 
-import data from '../../shared/data';
+// import data from '../../shared/data';
 import Heading from '../../components/Heading.tsx';
 import { header } from '../../shared/table.ts';
 import { shorten } from '../../shared/functions.ts';
+import { useAppStore } from '../../utils/store/appStore.tsx';
 
 const countUniques = (orders = [], name) => {
   const tableObj = {};
@@ -17,8 +18,11 @@ const countUniques = (orders = [], name) => {
   const uStates = Object.keys(tableObj).length;
   return uStates;
 };
+ 
 
-console.log(countUniques(data, 'sector'));
+
+const ECommerce = () => {
+const {data} = useAppStore()
 
 const topCardData = [
   {
@@ -35,7 +39,6 @@ const topCardData = [
   },
 ];
 
-const ECommerce = () => {
   return (
     <>
       <Heading>CRCS Admin Portal</Heading>

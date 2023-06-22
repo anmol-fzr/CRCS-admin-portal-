@@ -5,7 +5,6 @@ import { sectors } from '../shared/data';
 
 const arraySectors = Array.from(sectors);
 
-console.log(sectors);
 
 interface ChartThreeState {
   series: number[];
