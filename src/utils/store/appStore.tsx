@@ -5,7 +5,15 @@ import UserI from '../../shared/interface';
 export const useAppStore = create(
   persist(
     (set, get) => ({
-      users: [],
+      users: [
+        {
+          name: 'Anmol',
+          email: 'admin@example.com',
+          phone: '0000000000',
+          password: 'admin',
+          cPassword: 'admin',
+        },
+      ],
       setUser: (user: UserI) => {
         set((store: any) => ({ users: [...store.users, user] }));
       },

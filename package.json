@@ -1,5 +1,5 @@
 {
-  "name": "tailadmin-react-free",
+  "name": "crcs-admin-protal",
   "private": true,
   "version": "1.0.5",
   "type": "module",
@@ -7,11 +7,6 @@
     "dev": "vite --open --host ",
     "build": "vite build",
     "preview": "vite preview"
-  },
-  "author": {
-    "name": "TailAdmin",
-    "email": "hello@tailadmin.com",
-    "url": "https://tailadmin.com"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",
